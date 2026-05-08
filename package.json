@@ -1,7 +1,7 @@
 {
   "name": "@manicjs/mcp",
   "version": "1.0.1",
-  "description": "MCP (Model Context Protocol) plugin for Manic \u2014 Streamable HTTP MCP server endpoint",
+  "description": "MCP (Model Context Protocol) plugin for Manic — Streamable HTTP MCP server endpoint",
   "keywords": [
     "agents",
     "ai",
@@ -9,6 +9,10 @@
     "mcp",
     "model-context-protocol"
   ],
+  "homepage": "https://github.com/manic-js/plugin-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/manic-js/plugin-mcp/issues"
+  },
   "license": "GPL-3.0",
   "author": "Rahuletto",
   "repository": {
@@ -31,17 +35,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
-    "manicjs": "^0.7.4",
-    "zod": "^3.0.0 || ^4.0.0"
-  },
   "devDependencies": {
     "@shikijs/transformers": "^4.0.2",
     "@types/mdx": "^2.0.13",
     "fumadocs-docgen": "^3.0.10"
   },
-  "homepage": "https://github.com/manic-js/plugin-mcp#readme",
-  "bugs": {
-    "url": "https://github.com/manic-js/plugin-mcp/issues"
+  "peerDependencies": {
+    "manicjs": "^0.7.4",
+    "zod": "^3.0.0 || ^4.0.0"
   }
 }

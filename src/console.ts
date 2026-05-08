@@ -1,4 +1,4 @@
-import type { McpTool } from './tool';
+import type { McpTool } from "./tool";
 
 const MAX_LOGS = 200;
 export const consoleLogs: Array<{
@@ -12,28 +12,26 @@ export const CONSOLE_SCRIPT = `(function(){var e='/mcp/console',l=['log','warn',
 /** Returns the console log capture tool (dev-only). */
 export function consoleLogTool(): McpTool {
   return {
-    name: 'get_console_logs',
+    name: "get_console_logs",
     description:
-      'Returns browser console logs captured from the running page (requires /mcp/console.js).',
+      "Returns browser console logs captured from the running page (requires /mcp/console.js).",
     inputSchema: {
-      type: 'object',
+      type: "object",
       properties: {
         level: {
-          type: 'string',
-          description: 'Filter by level: log | warn | error | info | debug',
+          type: "string",
+          description: "Filter by level: log | warn | error | info | debug",
         },
         limit: {
-          type: 'number',
-          description: 'Max entries to return (default 50)',
+          type: "number",
+          description: "Max entries to return (default 50)",
         },
       },
     },
     execute({ level, limit }) {
       const lvl = level ? String(level) : null;
-      const lim = typeof limit === 'number' ? limit : 50;
-      const filtered = lvl
-        ? consoleLogs.filter(e => e.level === lvl)
-        : consoleLogs;
+      const lim = typeof limit === "number" ? limit : 50;
+      const filtered = lvl ? consoleLogs.filter((e) => e.level === lvl) : consoleLogs;
       return filtered.slice(-lim);
     },
   };
@@ -41,7 +39,7 @@ export function consoleLogTool(): McpTool {
 
 /** Route handler that receives log entries POSTed by the browser script. */
 export async function consoleIngestHandler(req: Request): Promise<Response> {
-  if (req.method !== 'POST') return new Response(null, { status: 405 });
+  if (req.method !== "POST") return new Response(null, { status: 405 });
   try {
     const entry = (await req.json()) as {
       level: string;

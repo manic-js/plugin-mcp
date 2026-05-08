@@ -16,8 +16,8 @@ bun add @manicjs/mcp
 ## Usage
 
 ```ts
-import { defineConfig } from 'manicjs/config';
-import { mcp } from '@manicjs/mcp';
+import { defineConfig } from "manicjs/config";
+import { mcp } from "@manicjs/mcp";
 
 export default defineConfig({
   plugins: [mcp()],

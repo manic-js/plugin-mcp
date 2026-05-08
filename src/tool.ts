@@ -1,4 +1,4 @@
-import type { ZodObject, ZodRawShape, infer as ZodInfer } from 'zod';
+import type { ZodObject, ZodRawShape, infer as ZodInfer } from "zod";
 
 /**
  * MCP tool definition
@@ -12,7 +12,7 @@ export interface McpTool {
   description: string;
   /** JSON Schema for tool input */
   inputSchema: {
-    type: 'object';
+    type: "object";
     properties?: Record<string, unknown>;
     required?: string[];
   };
@@ -50,7 +50,7 @@ type ToolDef<S extends ZodObject<ZodRawShape>> = {
 /** Define a strongly-typed MCP tool from a Zod schema. @see https://www.manicjs.tech/docs/framework/plugins/mcp#with-definetool-recommended */
 export function defineTool<S extends ZodObject<ZodRawShape>>(
   name: string,
-  def: ToolDef<S>
+  def: ToolDef<S>,
 ): McpTool {
   const shape = def.input.shape;
   const properties: Record<string, unknown> = {};
@@ -58,20 +58,19 @@ export function defineTool<S extends ZodObject<ZodRawShape>>(
 
   for (const [key, field] of Object.entries(shape)) {
     const f = field as any;
-    const isOptional =
-      f._def?.typeName === 'ZodOptional' || f.isOptional?.() === true;
+    const isOptional = f._def?.typeName === "ZodOptional" || f.isOptional?.() === true;
     const inner = isOptional ? (f._def?.innerType ?? f) : f;
-    const typeName: string = inner._def?.typeName ?? '';
+    const typeName: string = inner._def?.typeName ?? "";
 
     const prop: Record<string, unknown> = {
       type:
-        typeName === 'ZodNumber'
-          ? 'number'
-          : typeName === 'ZodBoolean'
-            ? 'boolean'
-            : typeName === 'ZodArray'
-              ? 'array'
-              : 'string',
+        typeName === "ZodNumber"
+          ? "number"
+          : typeName === "ZodBoolean"
+            ? "boolean"
+            : typeName === "ZodArray"
+              ? "array"
+              : "string",
     };
     const desc = f._def?.description ?? inner._def?.description;
     if (desc) prop.description = desc;
@@ -84,7 +83,7 @@ export function defineTool<S extends ZodObject<ZodRawShape>>(
     name,
     description: def.description,
     inputSchema: {
-      type: 'object',
+      type: "object",
       properties,
       ...(required.length ? { required } : {}),
     },

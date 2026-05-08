@@ -1,6 +1,6 @@
-import type { McpTool } from './tool';
+import type { McpTool } from "./tool";
 
-const PROTOCOL_VERSION = '2025-03-26';
+const PROTOCOL_VERSION = "2025-03-26";
 
 export { PROTOCOL_VERSION };
 
@@ -9,27 +9,25 @@ export async function buildDiscoveryDocs(
   serverName: string,
   serverVersion: string,
   endpoint: string,
-  tools: McpTool[]
+  tools: McpTool[],
 ) {
   const toolDocs = tools
-    .map(t => {
+    .map((t) => {
       const props = t.inputSchema.properties ?? {};
       const req = new Set(t.inputSchema.required ?? []);
       const params = Object.entries(props)
         .map(
           ([k, v]: [string, any]) =>
-            `  - \`${k}${req.has(k) ? '' : '?'}\` (${v.type ?? 'string'})${v.description ? ': ' + v.description : ''}`
+            `  - \`${k}${req.has(k) ? "" : "?"}\` (${v.type ?? "string"})${v.description ? ": " + v.description : ""}`,
         )
-        .join('\n');
+        .join("\n");
       return [
         `### \`${t.name}\``,
         t.description,
-        ...(params
-          ? ['', '**Parameters:**', params]
-          : ['', '_No parameters._']),
-      ].join('\n');
+        ...(params ? ["", "**Parameters:**", params] : ["", "_No parameters._"]),
+      ].join("\n");
     })
-    .join('\n\n');
+    .join("\n\n");
 
   const skillContent = `# ${serverName} — MCP Server Skill
 
@@ -74,13 +72,13 @@ Mcp-Session-Id: <session-id>
 `;
 
   const skillBytes = new TextEncoder().encode(skillContent);
-  const hashBuf = await crypto.subtle.digest('SHA-256', skillBytes);
+  const hashBuf = await crypto.subtle.digest("SHA-256", skillBytes);
   const digest =
-    'sha256:' +
+    "sha256:" +
     Array.from(new Uint8Array(hashBuf))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-  const skillUrl = '/.well-known/agent-skills/use-mcp/SKILL.md';
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  const skillUrl = "/.well-known/agent-skills/use-mcp/SKILL.md";
 
   return {
     skillContent,
@@ -90,19 +88,19 @@ Mcp-Session-Id: <session-id>
       endpoint,
       name: serverName,
       version: serverVersion,
-      tools: tools.map(t => ({ name: t.name, description: t.description })),
+      tools: tools.map((t) => ({ name: t.name, description: t.description })),
     }),
     serverCard: JSON.stringify({
       serverInfo: { name: serverName, version: serverVersion },
-      transport: { type: 'streamable-http', endpoint },
+      transport: { type: "streamable-http", endpoint },
       capabilities: { tools: true, resources: false, prompts: false },
     }),
     agentSkillsIndex: JSON.stringify({
-      $schema: 'https://schemas.agentskills.io/discovery/0.2.0/schema.json',
+      $schema: "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
       skills: [
         {
-          name: 'use-mcp',
-          type: 'skill-md',
+          name: "use-mcp",
+          type: "skill-md",
           description: `How to connect to and use the ${serverName} MCP server`,
           url: skillUrl,
           digest,
