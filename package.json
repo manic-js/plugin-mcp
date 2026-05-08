@@ -35,6 +35,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "prepare": "simple-git-hooks"
+  },
   "devDependencies": {
     "@shikijs/transformers": "^4.0.2",
     "@types/mdx": "^2.0.13",
@@ -44,9 +47,6 @@
   "peerDependencies": {
     "manicjs": "^0.7.7",
     "zod": "^4.4.3"
-  },
-  "scripts": {
-    "prepare": "simple-git-hooks"
   },
   "simple-git-hooks": {
     "pre-commit": "bunx --bun oxlint . && bunx --bun oxfmt --check --config .oxfmt.json ."

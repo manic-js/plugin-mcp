@@ -1,5 +1,5 @@
-import type { McpTool } from "./tool";
-import { PROTOCOL_VERSION } from "./discovery";
+import type { McpTool } from './tool';
+import { PROTOCOL_VERSION } from './discovery';
 
 export type HandleResult = { response: unknown; newSessionId?: string } | null;
 
@@ -10,7 +10,7 @@ export function handleMessage(
   sessions: Map<string, { initialized: boolean }>,
   tools: McpTool[],
   serverName: string,
-  serverVersion: string,
+  serverVersion: string
 ): HandleResult {
   const { id, method, params } = msg as {
     id?: unknown;
@@ -18,13 +18,13 @@ export function handleMessage(
     params?: any;
   };
 
-  if (method === "initialize") {
+  if (method === 'initialize') {
     const newSessionId = crypto.randomUUID();
     sessions.set(newSessionId, { initialized: false });
     return {
       newSessionId,
       response: {
-        jsonrpc: "2.0",
+        jsonrpc: '2.0',
         id,
         result: {
           protocolVersion: PROTOCOL_VERSION,
@@ -35,16 +35,16 @@ export function handleMessage(
     };
   }
 
-  if (method === "notifications/initialized") {
+  if (method === 'notifications/initialized') {
     const s = sessionId ? sessions.get(sessionId) : null;
     if (s) s.initialized = true;
     return null;
   }
 
-  if (method === "tools/list") {
+  if (method === 'tools/list') {
     return {
       response: {
-        jsonrpc: "2.0",
+        jsonrpc: '2.0',
         id,
         result: {
           tools: tools.map(({ name, description, inputSchema }) => ({
@@ -57,12 +57,12 @@ export function handleMessage(
     };
   }
 
-  if (method === "tools/call") {
-    const tool = tools.find((t) => t.name === params?.name);
+  if (method === 'tools/call') {
+    const tool = tools.find(t => t.name === params?.name);
     if (!tool) {
       return {
         response: {
-          jsonrpc: "2.0",
+          jsonrpc: '2.0',
           id,
           error: { code: -32601, message: `Tool not found: ${params?.name}` },
         },
@@ -73,15 +73,15 @@ export function handleMessage(
         try {
           const result = await tool.execute(params?.arguments ?? {});
           return {
-            jsonrpc: "2.0",
+            jsonrpc: '2.0',
             id,
             result: {
-              content: [{ type: "text", text: JSON.stringify(result) }],
+              content: [{ type: 'text', text: JSON.stringify(result) }],
             },
           };
         } catch (err: unknown) {
           return {
-            jsonrpc: "2.0",
+            jsonrpc: '2.0',
             id,
             error: {
               code: -32000,
@@ -95,9 +95,9 @@ export function handleMessage(
 
   return {
     response: {
-      jsonrpc: "2.0",
+      jsonrpc: '2.0',
       id: id ?? null,
-      error: { code: -32601, message: "Method not found" },
+      error: { code: -32601, message: 'Method not found' },
     },
   };
 }
