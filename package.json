@@ -1,6 +1,6 @@
 {
   "name": "@manicjs/mcp",
-  "version": "1.0.1",
+  "version": "1.0.1-canary.0",
   "description": "MCP (Model Context Protocol) plugin for Manic — Streamable HTTP MCP server endpoint",
   "keywords": [
     "agents",
@@ -49,7 +49,7 @@
     "fumadocs-docgen": "^3.0.10"
   },
   "peerDependencies": {
-    "manicjs": "^1.0.5",
+    "manicjs": "1.0.3-canary.0",
     "zod": "^4.4.3"
   }
 }
